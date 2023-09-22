@@ -9,12 +9,12 @@ Below are screenshots of the two GUIs. The first image is the uniaxial analysis 
 
 
 # Requirements
-Python 3.7+ (tested on Python 3.11.5)
-piecewise-regression 1.1.2+ - [Github](https://github.com/chasmani/piecewise-regression), [conda-forge](https://anaconda.org/conda-forge/piecewise-regression)
-matplotlib 3.7.2+
-scikit-learn 1.3.0+
-numpy 1.24.3+
-PySimpleGUI 4.60.5+ 
+* Python 3.7+ (tested on Python 3.11.5)
+* piecewise-regression 1.1.2+ - [Github](https://github.com/chasmani/piecewise-regression), [conda-forge](https://anaconda.org/conda-forge/piecewise-regression)
+* matplotlib 3.7.2+
+* scikit-learn 1.3.0+
+* numpy 1.24.3+
+* PySimpleGUI 4.60.5+ 
 
 I recommend [Anaconda Python 3.11](https://www.anaconda.com/download#downloads) for desktop systems. 
 
