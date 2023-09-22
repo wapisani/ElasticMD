@@ -44,8 +44,8 @@ def draw_figure(element, figure):
 
 # Define the window layout
 layout = [
-    [sg.InputText(r"C:\Users\RDEL1WAP\Documents\Research\Polymer_Additive_Blends\PETG_Fe",font='Courier 18',size=(48,1),key="-directory-")],
-    [sg.InputText(r"PETGFe_07062022_IFFRPlyEq_144_20v_S1Sh1.log.lammps",font='Courier 18',size=(48,1),key="-logfile-")],
+    [sg.InputText(r"./ElasticMD/examples/PLA/Shear_Data/",font='Courier 18',size=(48,1),key="-directory-")],
+    [sg.InputText(r"PLA_S2Sh1.log.lammps",font='Courier 18',size=(48,1),key="-logfile-")],
     [sg.Button("Load Data",font='Courier 18',key="-LOAD-",size=(12,1)),
     sg.Button("Fit Shear Modulus & Save Data",font='Courier 18',key="-fitShear-",size=(33,1),tooltip="Fitting may take several moments")],
     [sg.Text(text="Fitting parameters for G ",font='Courier 18',size=(45,1),key="-G_fit-")],
@@ -80,7 +80,7 @@ while True:
             window["-G_CANVAS-"].update()
         
         log_file = values['-logfile-']
-        os.chdir(values['-directory-'])
+        os.chdir(os.path.normpath(values['-directory-']))
         strain_dir, primary_strain, primary_stress = sf.load_data(log_file)
         # Set parameter labels
         window['-G_fit-'].update(f"Fitting parameters for G{strain_dir}")

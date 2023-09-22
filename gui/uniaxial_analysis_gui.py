@@ -44,8 +44,8 @@ def draw_figure(element, figure):
 
 # Define the window layout
 layout = [
-    [sg.InputText(r"C:\Users\RDEL1WAP\Documents\Research\GSL\Aerogels\PU",font='Courier 18',size=(45,1),key="-directory-"),
-     sg.InputText(r"n3300_300K_2x2.Comp2.log.lammps",font='Courier 18',size=(45,1),key="-logfile-"),
+    [sg.InputText(r"./ElasticMD/examples/PLA/Uniaxial_Data",font='Courier 18',size=(45,1),key="-directory-"),
+     sg.InputText(r"PLA_S5YM1.log.lammps",font='Courier 18',size=(45,1),key="-logfile-"),
      sg.Button("Load Data",font='Courier 18',key="-LOAD-"),
      sg.Button("Fit All & Save Data",font='Courier 18',key="-FITALL-"),
      sg.Button("Save Data",font='Courier 18',key="-SAVE-")],
@@ -119,7 +119,7 @@ while True:
             compression_flag = True
         else:
             compression_flag = False
-        os.chdir(values['-directory-'])
+        os.chdir(os.path.normpath(values['-directory-']))
         strain_dir, primary_strain, primary_stress, \
             secondary_strain1, secondary_strain2, Nu1_label,\
             Nu2_label = uf.load_data(log_file)
