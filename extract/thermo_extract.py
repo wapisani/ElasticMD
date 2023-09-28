@@ -178,3 +178,40 @@ class log:
         
         return properties
     
+    def export2Csv(lists2Export,csvname,csvdir,header=''):
+        """
+        Takes a list of lists and exports them to a CSV file called "csvname"
+        located in csvdir.
+
+        Parameters
+        ----------
+        lists2Export : list of lists
+            List of lists to export to CSV.
+        csvname : str
+            Filename of CSV file to be written.
+        csvdir : str
+            Path to CSV file.
+        header : str, optional
+            If you want to add a comment to the CSV file. The default is ''.
+
+        Returns
+        -------
+        None.
+
+        """
+        
+        import os
+        import numpy as np
+        os.chdir(csvdir)
+        ncolumns = len(lists2Export) 
+        nrows = len(lists2Export[0])
+        
+        # Add lists to NumPy 2D array
+        data = np.zeros((nrows,ncolumns))
+        for col in range(ncolumns):
+            data[:,col] = lists2Export[col]
+        
+        # Save NumPy data
+        np.savetxt(csvname,data,delimiter=",",header=header)
+        print(f"{csvname} saved to {csvdir}")
+    
