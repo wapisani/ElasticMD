@@ -18,6 +18,8 @@ Below are screenshots of the two GUIs. The first image is the uniaxial analysis 
 
 I recommend [Anaconda Python 3.11](https://www.anaconda.com/download#downloads) for desktop systems. 
 
+# License
+All code in this repository, unless otherwise noted, is licensed under the GNU General Public License v3.0. 
 
-To Do:
+# To Do:
 * Make a PySimpleGUI for bulk modulus
