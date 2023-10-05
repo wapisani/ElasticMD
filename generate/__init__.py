@@ -263,5 +263,153 @@ write_data ${myid}.dat
             print(f"{shear_filename}.in written successfully!")
             
  
-def elastic():
-    pass
+def elastic(script_filename,data_filename,strain_rate=2e8,strain=0.221402758160,directions = (1,2,3)):
+    """
+    This function will write out a LAMMPS script that will uniaxially strain the system at 
+    the specified strain rate until the specified level of engineering strain
+    is achieved. Three scripts will be written out, each pulling in a different 
+    direction.
+
+    Parameters
+    ----------
+    script_filename : str
+        Filename of script, please note that '.in' should not be in filename.
+    data_filename : str
+        Data file to be read into LAMMPS.
+    strain_rate : float, optional
+        Strain rate in 1/s. The default is 2e8.
+    strain : float, optional
+        Engineering strain. The default is 0.221402758160. 
+    directions : tuple, optional
+        The directions to strain the system in. The default is (1,2,3).
+        Can be specified to only generate one direction such as directions=(1)
+
+    Returns
+    -------
+    None.
+
+    """
+    dir_dict = {1: 'x', 2: 'y', 3: 'zz'}
+    
+    for direction in directions:
+        dir_str = dir_dict[direction]
+        elastic_filename = script_filename + f'YM{direction}'
+        with open(elastic_filename+'.in','w') as f:
+            f.write("# This script was written with ElasticMD.\n")
+            f.write(f"# This script will strain the system in the {dir_str}-direction \
+at a strain rate of {strain_rate} until an engineering strain of {strain} is achieved. \
+Simulation will run at 300 K and 1.0 atm in the non-straining directions.\n")
+            f.write("""
+#################################
+### Initialization & Settings ###
+#################################
+
+# Debugging
+echo both
+
+units 		real
+dimension	3
+boundary	p p p
+
+""")
+            f.write(f"variable myid string {elastic_filename}\n")
+            f.write(f"variable data string {data_filename}\n")
+            f.write("log ${myid}.log.lammps\n")
+            f.write("timestep 1 # 1 fs\n")
+            f.write(f"variable strain equal {strain}\n")
+            f.write(f"variable strain_rate_s equal {strain_rate}\n")
+            f.write(f"variable dir equal {direction}\n")
+            f.write("""# dir 1 means x
+# dir 2 means y
+# dir 3 means z
+##############################
+### Force Field Parameters ###
+##############################
+# Insert your force field parameters here
+atom_style	
+bond_style 
+angle_style 
+dihedral_style 
+improper_style 
+special_bonds lj/coul 0 0 1
+pair_style 
+pair_modify mix sixthpower
+kspace_style pppm 1e-6
+read_data       ${data}
+
+change_box all triclinic remap
+kspace_style pppm 1e-6 # You MUST redefine kspace after changing the box to triclinic
+
+
+variable        strain_rate_fs equal ${strain_rate_s}*1e-15 # in 1/fs
+variable        totaltime equal ${strain}/${strain_rate_fs} # total time in femtoseconds
+variable        steps equal $(round(v_totaltime/dt))
+variable        quarter_steps equal $(floor(v_steps/4))
+variable        eeng equal time*${strain_rate_fs}
+variable        etrue equal ln(1+v_eeng)
+
+variable thermo_freq equal $(round(v_steps/2000))
+variable dump_freq equal $(round(v_steps/30))
+
+##############################
+########### Strains ##########
+##############################
+
+variable	tmp equal lx
+variable	lx0 equal ${tmp}
+variable    tmp equal ly
+variable    ly0 equal ${tmp}
+variable    tmp equal lz
+variable    lz0 equal ${tmp}
+
+variable	eengx equal (lx-${lx0})/${lx0}
+variable	eengy equal (ly-${ly0})/${ly0}
+variable	eengz equal (lz-${lz0})/${lz0}
+variable    etruex equal ln(1+v_eengx)
+variable    etruey equal ln(1+v_eengy)
+variable    etruez equal ln(1+v_eengz)
+
+
+##############################
+########## Stresses ##########
+##############################
+
+compute         p all pressure thermo_temp
+variable        sxx equal -0.101325*c_p[1] #in MPa
+variable        syy equal -0.101325*c_p[2] #in MPa
+variable        szz equal -0.101325*c_p[3] #in MPa
+fix             sxx_ave all ave/time 1 ${thermo_freq} ${thermo_freq} v_sxx
+fix             syy_ave all ave/time 1 ${thermo_freq} ${thermo_freq} v_syy
+fix             szz_ave all ave/time 1 ${thermo_freq} ${thermo_freq} v_szz
+
+
+##############################
+### Thermo & Dump Settings ###
+##############################
+
+thermo ${thermo_freq}
+thermo_style custom step temp press etotal ke pe epair ebond eangle edihed eimp elong lx ly lz pxx pyy pzz v_etrue v_eengx v_eengy v_eengz v_etruex v_etruey v_etruez v_sxx v_syy v_szz f_sxx_ave f_syy_ave f_szz_ave vol density v_dir
+dump 1 all custom/gz ${dump_freq} ${myid}.lammpstrj.gz x y z type id
+ 
+####################
+### Run Settings ###
+####################
+neigh_modify    delay 0 every 1 check yes one 2500 page 100000
+if "${dir} == 1" then &
+  "fix          1 all npt temp 300 300 100 y 1 1 1000 z 1 1 1000" &
+  "fix          2 all deform 1 x erate ${strain_rate_fs}"
+if "${dir} == 2" then &
+  "fix          1 all npt temp 300 300 100 x 1 1 1000 z 1 1 1000" &
+  "fix          2 all deform 1 y erate ${strain_rate_fs}"
+if "${dir} == 3" then &
+  "fix          1 all npt temp 300 300 100 x 1 1 1000 y 1 1 1000" &
+  "fix          2 all deform 1 z erate ${strain_rate_fs}"
+# Breaking up the runs resets the pppm grid points which increases accuracy when box size changes
+# Please note that the start and stop keywords are necessary so that the fix deform command deforms the box correctly over several runs
+run		${quarter_steps} start 0 stop $(v_quarter_steps*4)
+run		${quarter_steps} start 0 stop $(v_quarter_steps*4)
+run		${quarter_steps} start 0 stop $(v_quarter_steps*4)
+run		${quarter_steps} start 0 stop $(v_quarter_steps*4)
+write_data ${myid}.dat
+""")
+            print(f"{elastic_filename}.in written successfully!")

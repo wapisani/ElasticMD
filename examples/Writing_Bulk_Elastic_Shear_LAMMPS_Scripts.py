@@ -32,3 +32,13 @@ shear_filename = r'PEEK_Shear'
 # We will reuse the data file from before
 ElasticMD.generate.shear(shear_filename,example_data_filename,strain_rate=2e8,strain=0.2214028,directions=(1,2,3))
 
+# Now let's try writing out uniaxial straining LAMMPS input scripts!
+# Please note that "YM1" "YM2" "YM3" will be added to the end of your filename
+# so do not include the file extension in your filename. These are needed for 
+# the uniaxial_analysis_gui.py script to work properly.
+elastic_filename = r'PEEK_Uniaxial'
+# We will reuse the data file from before
+ElasticMD.generate.elastic(elastic_filename,example_data_filename,strain_rate=2e8,strain=0.2214028,directions=(1,2,3))
+
+
+
