@@ -1,0 +1,16 @@
+# IFF-R bond coefficients for Nylon 6 
+bond_coeff 1 class2 0.965 532.506 -1282.9 2004.77
+bond_coeff 2 class2 1.34 400 0 0
+bond_coeff 3 morse 82.696 1.941 1.514
+bond_coeff 4 class2 1.216 823.795 -1878.79 2303.53
+bond_coeff 5 class2 1.101 345 -691.89 844.6
+bond_coeff 6 morse 82.696 1.914 1.53
+bond_coeff 7 morse 72.897 2.25 1.457
+bond_coeff 8 class2 1.006 466.74 -1073.6 1251.11
+bond_coeff 9 morse 72.897 2.12 1.452
+bond_coeff 10 morse 72.897 2.22 1.416
+bond_coeff 11 class2 0.97 563.28 -1428.22 1902.12
+bond_coeff 12 class2 1.01 462.75 -1053.63 1545.76
+bond_coeff 13 class2 1.3649 368.731 -832.478 1274.02
+bond_coeff 14 class2 1.202 851.14 -1918.49 2160.77
+bond_coeff 15 morse 82.696 1.74 1.5202

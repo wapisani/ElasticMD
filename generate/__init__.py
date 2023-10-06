@@ -54,17 +54,21 @@ timestep        1 # 1 fs
 ### Force Field Parameters ###
 ##############################
 # Insert your force field parameters here
-atom_style
-bond_style
-angle_style
-dihedral_style
-improper_style
-special_bonds
-pair_style
-pair_modify
-kspace_style
+# Parameters for the example PA6 system are included as an example
+atom_style	full
+bond_style hybrid class2 morse
+angle_style class2
+dihedral_style class2
+improper_style class2
+special_bonds lj/coul 0 0 1
+pair_style lj/class2/coul/long 10.0
+pair_modify mix sixthpower
+kspace_style pppm 1e-6
                
 read_data ${data}
+
+# Include IFF-R bond coefficients for PA6
+include PA6_IFFR.coeff
 
 variable thermo_freq equal 10000
 variable dump_freq equal 20*${thermo_freq}
@@ -174,21 +178,21 @@ boundary	p p p
 ##############################
 ### Force Field Parameters ###
 ##############################
-# Insert your force field parameters here
-atom_style	
-bond_style 
-angle_style 
-dihedral_style 
-improper_style 
+atom_style	full
+bond_style hybrid class2 morse
+angle_style class2
+dihedral_style class2
+improper_style class2
 special_bonds lj/coul 0 0 1
-pair_style 
+pair_style lj/class2/coul/long 10.0
 pair_modify mix sixthpower
 kspace_style pppm 1e-6
 read_data       ${data}
-
 change_box all triclinic remap
 kspace_style pppm 1e-6 # You MUST redefine kspace after changing the box to triclinic
 
+# Include IFF-R bond coefficients for PA6 example
+include PA6_IFFR.coeff
 
 variable        strain_rate_fs equal ${strain_rate_s}*1e-15 # in 1/fs
 variable        totaltime equal ${strain}/${strain_rate_fs} # total time in femtoseconds
@@ -289,7 +293,7 @@ def elastic(script_filename,data_filename,strain_rate=2e8,strain=0.221402758160,
     None.
 
     """
-    dir_dict = {1: 'x', 2: 'y', 3: 'zz'}
+    dir_dict = {1: 'x', 2: 'y', 3: 'z'}
     
     for direction in directions:
         dir_str = dir_dict[direction]
@@ -326,19 +330,19 @@ boundary	p p p
 ### Force Field Parameters ###
 ##############################
 # Insert your force field parameters here
-atom_style	
-bond_style 
-angle_style 
-dihedral_style 
-improper_style 
+atom_style	full
+bond_style hybrid class2 morse
+angle_style class2
+dihedral_style class2
+improper_style class2
 special_bonds lj/coul 0 0 1
-pair_style 
+pair_style lj/class2/coul/long 10.0
 pair_modify mix sixthpower
 kspace_style pppm 1e-6
 read_data       ${data}
 
-change_box all triclinic remap
-kspace_style pppm 1e-6 # You MUST redefine kspace after changing the box to triclinic
+# Include IFF-R bond coefficients for PA6 example
+include PA6_IFFR.coeff
 
 
 variable        strain_rate_fs equal ${strain_rate_s}*1e-15 # in 1/fs
