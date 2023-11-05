@@ -16,7 +16,7 @@ Below are screenshots of the two GUIs. The first image is the uniaxial analysis 
 * numpy 1.24.3+
 * PySimpleGUI 4.60.5+ 
 
-I recommend [Anaconda Python 3.11](https://www.anaconda.com/download#downloads) for desktop systems. Installation instructions are [here](https://github.com/wapisani/ElasticMD/wiki/Installation).
+I recommend [Anaconda Python 3.11](https://www.anaconda.com/download#downloads) for desktop systems. ElasticMD installation instructions are [here](https://github.com/wapisani/ElasticMD/wiki/Installation).
 
 # License
 All code in this repository, unless otherwise noted, is licensed under the GNU General Public License v3.0. 
