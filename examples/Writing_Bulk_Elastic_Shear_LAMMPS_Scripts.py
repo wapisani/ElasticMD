@@ -15,12 +15,12 @@ sys.path.insert(0,r'F:\Documents\Programming\Python')
 
 import ElasticMD
 
-directory = r'F:\Documents\Programming\Python\Elastic_MD_Testing'
+directory = r'F:\Documents\Programming\Python\ElasticMD\examples\PA6'
 os.chdir(directory)
 
 # Let's try writing out a bulk modulus LAMMPS input script!
-bulk_filename = r'PEEK_BK.in'
-example_data_filename = r'PEEK_ready_for_deformation.dat'
+example_data_filename = r'PA6_10052023_IFFREq_180S1.dat.gz'
+bulk_filename = example_data_filename.split('.')[0] + '_BK.in'
 
 ElasticMD.generate.bulk(bulk_filename,example_data_filename)
 
@@ -28,7 +28,7 @@ ElasticMD.generate.bulk(bulk_filename,example_data_filename)
 # Please note that "Sh1" "Sh2" "Sh3" will be added to the end of your filename
 # so do not include the file extension in your filename. These are needed for 
 # the shear_analysis_gui.py script to work properly.
-shear_filename = r'PEEK_Shear'
+shear_filename = example_data_filename.split('.')[0] + '_'
 # We will reuse the data file from before
 ElasticMD.generate.shear(shear_filename,example_data_filename,strain_rate=2e8,strain=0.2214028,directions=(1,2,3))
 
@@ -36,7 +36,7 @@ ElasticMD.generate.shear(shear_filename,example_data_filename,strain_rate=2e8,st
 # Please note that "YM1" "YM2" "YM3" will be added to the end of your filename
 # so do not include the file extension in your filename. These are needed for 
 # the uniaxial_analysis_gui.py script to work properly.
-elastic_filename = r'PEEK_Uniaxial'
+elastic_filename = example_data_filename.split('.')[0] + '_'
 # We will reuse the data file from before
 ElasticMD.generate.elastic(elastic_filename,example_data_filename,strain_rate=2e8,strain=0.2214028,directions=(1,2,3))
 
