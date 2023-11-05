@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Jul  8 12:04:12 2022
-
 @author: Dr. Will Pisani
 
 This file contains function definitions needed to analyze

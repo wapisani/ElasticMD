@@ -4,8 +4,8 @@
 @author: Dr. William A. Pisani
 
 Usage instructions:
-    From the root of compchemkit, in a terminal or Anaconda prompt
-    run the command "python -m pycct.gui.shear_analysis_gui"
+    From the root directory of ElasticMD, in a terminal or Anaconda prompt
+    run the command "python -m ElasticMD.gui.shear_analysis_gui"
     
 Tested Python Versions:
     Python 3.8.13 (default, Mar 28 2022, 06:59:08) [MSC v.1916 64 bit (AMD64)]

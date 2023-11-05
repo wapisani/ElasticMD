@@ -4,7 +4,7 @@
 @author: Dr. William A. Pisani
 
 Usage instructions:
-    From the root of compchemkit, in a terminal or Anaconda prompt
+    From the root directory of ElasticMD, in a terminal or Anaconda prompt
     run the command "python -m ElasticMD.gui.uniaxial_analysis_gui"
     
 Tested Python Versions:
