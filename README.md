@@ -23,3 +23,5 @@ All code in this repository, unless otherwise noted, is licensed under the GNU G
 
 # To Do:
 * Make a PySimpleGUI for bulk modulus
+* Make an overview PySimpleGUI that calls the shear and uniaxial GUIs
+* Figure out packaging for conda and PyPi
